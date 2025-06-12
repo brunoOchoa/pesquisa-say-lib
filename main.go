@@ -13,13 +13,18 @@ func main() {
 
 	client := whatsapp.NewClient(cfg.AccessToken, cfg.PhoneNumberID)
 
-	to := "5521997921747"
-	msg := "Olá, mensagem de teste!"
+	to := "5521985421711"
+	msg := "Olá, mensagem depois de ter respondido a mensagem anterior!"
 
 	err := client.SendTextMessage(to, msg)
 	if err != nil {
 		log.Fatalf("Erro ao enviar mensagem: %v", err)
 	}
+
+	// sendT := client.SendTemplateMessage(to, "hello_world", "en_US")
+	// if sendT != nil {
+	// 	log.Fatalf("Erro ao enviar template: %v", sendT)
+	// }
 
 	fmt.Println("✅ Mensagem enviada com sucesso!")
 }
