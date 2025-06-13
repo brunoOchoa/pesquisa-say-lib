@@ -5,9 +5,6 @@ import (
 )
 
 func TestLoadConfig(t *testing.T) {
-	// os.Setenv("WA_ACCESS_TOKEN", "teste_token")
-	// os.Setenv("WA_PHONE_ID", "teste_id")
-
 	cfg := LoadConfig()
 
 	if cfg.AccessToken != "teste_token" {
