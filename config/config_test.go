@@ -1,13 +1,12 @@
 package config
 
 import (
-	"os"
 	"testing"
 )
 
-func TestLoadConfig_Valid(t *testing.T) {
-	os.Setenv("WA_ACCESS_TOKEN", "teste_token")
-	os.Setenv("WA_PHONE_ID", "teste_id")
+func TestLoadConfig(t *testing.T) {
+	// os.Setenv("WA_ACCESS_TOKEN", "teste_token")
+	// os.Setenv("WA_PHONE_ID", "teste_id")
 
 	cfg := LoadConfig()
 
