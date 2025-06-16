@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"lib.com/pkg/model"
+	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
 )
 
 type RedirectRoundTripper struct {
@@ -69,7 +69,7 @@ func TestSendTextMessage(t *testing.T) {
 		},
 	}
 
-	err := client.SendTextMessage("5511999999999", "mensagem de teste")
+	err := client.SendTextMessage([]string{"5511999999999"}, "mensagem de teste")
 	if err != nil {
 		t.Errorf("Erro ao enviar mensagem: %v", err)
 	}
