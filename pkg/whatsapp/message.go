@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"lib.com/pkg/model"
+	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
 )
 
 func (c *Client) SendTextMessage(to []string, message string) error {

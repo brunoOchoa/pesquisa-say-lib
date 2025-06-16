@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"lib.com/config"
-	"lib.com/pkg/whatsapp"
+	"github.com/brunoOchoa/whatsapp-lib/config"
+	"github.com/brunoOchoa/whatsapp-lib/pkg/whatsapp"
 )
 
 func main() {

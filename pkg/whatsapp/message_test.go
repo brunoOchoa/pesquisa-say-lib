@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"lib.com/pkg/model"
+	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
 )
 
 type RedirectRoundTripper struct {
