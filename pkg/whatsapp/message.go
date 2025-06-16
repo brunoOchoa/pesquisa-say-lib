@@ -9,11 +9,16 @@ import (
 	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
 )
 
+const (
+	API_BASE_URL = "https://graph.facebook.com"
+	API_VERSION  = "v22.0"
+)
+
 func (c *Client) SendTextMessage(to []string, message string) error {
 	for _, phone := range to {
 		payload := model.MessagePayload{
 			MessagingProduct: "whatsapp",
-			To:               phone, // Agora é string
+			To:               phone,
 			Type:             "text",
 			Text: model.TextContent{
 				Body: message,
@@ -25,7 +30,7 @@ func (c *Client) SendTextMessage(to []string, message string) error {
 			return err
 		}
 
-		url := fmt.Sprintf("https://graph.facebook.com/v22.0/%s/messages", c.PhoneNumberID)
+		url := fmt.Sprintf("%s/%s/%s/messages", API_BASE_URL, API_VERSION, c.PhoneNumberID)
 
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
@@ -62,15 +67,13 @@ func (c *Client) SendTemplateMessage(to []string, template, language string) err
 		}
 		payload.Template.Name = template
 		payload.Template.Language.Code = language
-		// Se quiser passar parâmetros para o template, adicione aqui:
-		// payload.Template.Components = []model.TemplateComponent{ ... }
 
 		body, err := json.Marshal(payload)
 		if err != nil {
 			return err
 		}
 
-		url := fmt.Sprintf("https://graph.facebook.com/v22.0/%s/messages", c.PhoneNumberID)
+		url := fmt.Sprintf("%s/%s/%s/messages", API_BASE_URL, API_VERSION, c.PhoneNumberID)
 
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 		if err != nil {

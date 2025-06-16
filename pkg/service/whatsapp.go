@@ -1,14 +1,14 @@
 package service
 
-type WhatsAppServiceInterface interface {
+type WhatsAppService interface {
 	SendTextMessage(to []string, message string) error
 	SendTemplateMessage(to []string, templateName string, language string) error
 }
 
-type WhatsApp_service struct {
-	Client WhatsAppServiceInterface
+type whatsApp_service struct {
+	Client WhatsAppService
 }
 
-func NewWhatsAppService(client WhatsAppServiceInterface) *WhatsApp_service {
-	return &WhatsApp_service{Client: client}
+func NewWhatsAppService(client WhatsAppService) *whatsApp_service {
+	return &whatsApp_service{Client: client}
 }
