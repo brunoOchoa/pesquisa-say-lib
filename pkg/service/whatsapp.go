@@ -5,10 +5,10 @@ type WhatsAppServiceInterface interface {
 	SendTemplateMessage(to []string, templateName string, language string) error
 }
 
-type whatsApp_service struct {
+type WhatsApp_service struct {
 	Client WhatsAppServiceInterface
 }
 
-func NewWhatsAppService(client WhatsAppServiceInterface) *whatsApp_service {
-	return &whatsApp_service{Client: client}
+func NewWhatsAppService(client WhatsAppServiceInterface) *WhatsApp_service {
+	return &WhatsApp_service{Client: client}
 }
