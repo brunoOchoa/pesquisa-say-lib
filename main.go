@@ -11,7 +11,7 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 
-	client := whatsapp.NewClient(cfg.AccessToken, cfg.PhoneNumberID)
+	client := whatsapp.NewClient(cfg)
 
 	to := []string{"5521985421711", "5521997921747"}
 	// msg := "Olá, mensagem depois de ter respondido a mensagem anterior!"

@@ -2,6 +2,8 @@ package whatsapp
 
 import (
 	"net/http"
+
+	"github.com/brunoOchoa/whatsapp-lib/config"
 )
 
 type Client struct {
@@ -10,10 +12,10 @@ type Client struct {
 	HttpClient    *http.Client
 }
 
-func NewClient(accessToken, phoneNumberID string) *Client {
+func NewClient(cfg *config.Config) *Client {
 	return &Client{
-		AccessToken:   accessToken,
-		PhoneNumberID: phoneNumberID,
+		AccessToken:   cfg.AccessToken,
+		PhoneNumberID: cfg.PhoneNumberID,
 		HttpClient:    &http.Client{},
 	}
 }

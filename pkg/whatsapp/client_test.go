@@ -2,20 +2,25 @@ package whatsapp
 
 import (
 	"testing"
+
+	"github.com/brunoOchoa/whatsapp-lib/config"
 )
 
 func TestNewClient(t *testing.T) {
-	accessToken := "teste_token"
-	phoneID := "123456789"
 
-	client := NewClient(accessToken, phoneID)
-
-	if client.AccessToken != accessToken {
-		t.Errorf("AccessToken incorreto: esperado '%s', recebido '%s'", accessToken, client.AccessToken)
+	cfg := &config.Config{
+		AccessToken:   "teste_token",
+		PhoneNumberID: "123456789",
 	}
 
-	if client.PhoneNumberID != phoneID {
-		t.Errorf("PhoneNumberID incorreto: esperado '%s', recebido '%s'", phoneID, client.PhoneNumberID)
+	client := NewClient(cfg)
+
+	if client.AccessToken != cfg.AccessToken {
+		t.Errorf("AccessToken incorreto: esperado '%s', recebido '%s'", cfg.AccessToken, client.AccessToken)
+	}
+
+	if client.PhoneNumberID != cfg.PhoneNumberID {
+		t.Errorf("PhoneNumberID incorreto: esperado '%s', recebido '%s'", cfg.PhoneNumberID, client.PhoneNumberID)
 	}
 
 	if client.HttpClient == nil {

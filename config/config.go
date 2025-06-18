@@ -12,11 +12,11 @@ type Config struct {
 
 func LoadConfig() *Config {
 
-	accessToken := os.Getenv("WA_ACCESS_TOKEN")
-	phoneID := os.Getenv("WA_PHONE_ID")
+	accessToken := os.Getenv("WHATSAPP_TOKEN")
+	phoneID := os.Getenv("WHATSAPP_PHONE_NUMBER_ID")
 
 	if accessToken == "" || phoneID == "" {
-		log.Fatal("Variáveis de ambiente WA_ACCESS_TOKEN ou WA_PHONE_ID não definidas.")
+		log.Fatal("Variáveis de ambiente WHATSAPP_TOKEN ou WHATSAPP_PHONE_NUMBER_ID não definidas.")
 	}
 
 	return &Config{
