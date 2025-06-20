@@ -28,8 +28,10 @@ func (r *RedirectRoundTripper) RoundTrip(req *http.Request) (*http.Response, err
 
 func TestSendTextMessage(t *testing.T) {
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/v22.0/test_id/messages" {
-			t.Errorf("Caminho incorreto: %s", r.URL.Path)
+
+		expectedPath := "/v22.0/test_id/messages"
+		if r.URL.Path != expectedPath {
+			t.Errorf("Caminho incorreto. Esperado %s, recebido %s", expectedPath, r.URL.Path)
 		}
 
 		if r.Method != http.MethodPost {
@@ -37,7 +39,7 @@ func TestSendTextMessage(t *testing.T) {
 		}
 
 		if r.Header.Get("Authorization") != "Bearer test_token" {
-			t.Errorf("Authorization errado: %s", r.Header.Get("Authorization"))
+			t.Errorf("Authorization errado. Esperado 'Bearer test_token', recebido '%s'", r.Header.Get("Authorization"))
 		}
 
 		var payload model.MessagePayload
@@ -47,8 +49,12 @@ func TestSendTextMessage(t *testing.T) {
 			t.Errorf("Erro ao decodificar JSON: %v", err)
 		}
 
-		if payload.To != "5511999999999" || payload.Text.Body != "mensagem de teste" {
-			t.Errorf("Payload incorreto: %+v", payload)
+		if payload.To != "5511999999999" {
+			t.Errorf("Número de destino incorreto. Esperado '5511999999999', recebido '%s'", payload.To)
+		}
+
+		if payload.Text.Body != "mensagem de teste" {
+			t.Errorf("Conteúdo da mensagem incorreto. Esperado 'mensagem de teste', recebido '%s'", payload.Text.Body)
 		}
 
 		w.WriteHeader(http.StatusOK)
@@ -61,6 +67,7 @@ func TestSendTextMessage(t *testing.T) {
 	client := &Client{
 		PhoneNumberID: "test_id",
 		AccessToken:   "test_token",
+		ApiVersion:    "v22.0",
 		HttpClient: &http.Client{
 			Timeout: time.Second * 5,
 			Transport: &RedirectRoundTripper{
@@ -77,8 +84,12 @@ func TestSendTextMessage(t *testing.T) {
 }
 
 func TestSendTemplateMessage_Success(t *testing.T) {
-	// Mock do servidor HTTP
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		expectedPath := "/v22.0/test_id/messages"
+		if r.URL.Path != expectedPath {
+			t.Errorf("Caminho incorreto. Esperado %s, recebido %s", expectedPath, r.URL.Path)
+		}
 
 		if r.Header.Get("Authorization") != "Bearer test-token" {
 			t.Errorf("Authorization inválido. Esperado 'Bearer test-token', recebido '%s'", r.Header.Get("Authorization"))
@@ -95,20 +106,23 @@ func TestSendTemplateMessage_Success(t *testing.T) {
 	}))
 	defer mockServer.Close()
 
+	mockHost := strings.TrimPrefix(mockServer.URL, "http://")
+
 	client := &Client{
 		PhoneNumberID: "test_id",
 		AccessToken:   "test-token",
+		ApiVersion:    "v22.0",
 		HttpClient: &http.Client{
 			Timeout: time.Second * 5,
 			Transport: &RedirectRoundTripper{
 				original: http.DefaultTransport,
-				mockHost: strings.TrimPrefix(mockServer.URL, "http://"),
+				mockHost: mockHost,
 			},
 		},
 	}
 
 	err := client.SendTemplateMessage([]string{"5511999999999"}, "template_name", "pt_BR")
 	if err != nil {
-		t.Errorf("Erro ao enviar mensagem: %v", err)
+		t.Errorf("Erro ao enviar mensagem de template: %v", err)
 	}
 }
