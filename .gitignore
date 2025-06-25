@@ -7,5 +7,5 @@
 *.exe
 
 **/*tmp_data/
-.env
-.sh
+*.env
+*.sh
