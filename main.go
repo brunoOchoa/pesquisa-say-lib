@@ -27,4 +27,13 @@ func main() {
 	}
 
 	fmt.Println("✅ Mensagem enviada com sucesso!")
+
+	// Exemplo de uso do GetMessageStatus
+	// Substitua pelo ID real retornado ao enviar uma mensagem
+	messageID := "SEU_MESSAGE_ID_AQUI"
+	status, err := client.GetMessageStatus(messageID)
+	if err != nil {
+		log.Fatalf("Erro ao buscar status da mensagem: %v", err)
+	}
+	fmt.Printf("Status da mensagem %s: %s\n", messageID, status)
 }

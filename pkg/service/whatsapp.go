@@ -3,6 +3,7 @@ package service
 type WhatsAppService interface {
 	SendTextMessage(to []string, message string) error
 	SendTemplateMessage(to []string, templateName string, language string) error
+	GetMessageStatus(messageID string) (string, error)
 }
 
 type whatsApp_service struct {
