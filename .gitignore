@@ -1,1 +1,11 @@
-env.sh
+.DS_Store
+.thumbs.db
+
+# Editor directories and files
+.idea
+.vscode
+*.exe
+
+**/*tmp_data/
+.env
+.sh
