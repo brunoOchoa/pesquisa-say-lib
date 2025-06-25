@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
+	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
 	"github.com/brunoOchoa/whatsapp-lib/pkg/whatsapp"
 )
 
@@ -30,6 +32,7 @@ func main() {
 	// Exemplo de uso do GetMessageStatus
 	// Substitua pelo ID real retornado ao enviar uma mensagem
 
+	// Exemplo de payload recebido do webhook do WhatsApp (como map)
 	webhookPayload := map[string]interface{}{
 		"object": "whatsapp_business_account",
 		"entry": []interface{}{
@@ -69,7 +72,21 @@ func main() {
 			},
 		},
 	}
-	infos, err := whatsapp.ParseStatusFromWebhook(webhookPayload)
+
+	// 1. Converta o map para JSON
+	payloadBytes, err := json.Marshal(webhookPayload)
+	if err != nil {
+		log.Fatalf("Erro ao serializar payload: %v", err)
+	}
+
+	// 2. Faça o unmarshal para o struct model.Webhook
+	var webhookObj model.Webhook
+	if err := json.Unmarshal(payloadBytes, &webhookObj); err != nil {
+		log.Fatalf("Erro ao decodificar webhook: %v", err)
+	}
+
+	// 3. Use o struct na função ParseStatusFromWebhook
+	infos, err := whatsapp.ParseStatusFromWebhook(&webhookObj)
 	if err != nil {
 		log.Println("Erro ao processar webhook:", err)
 	}

@@ -2,6 +2,8 @@ package whatsapp
 
 import (
 	"fmt"
+
+	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
 )
 
 // StatusInfo representa as informações extraídas do webhook
@@ -14,53 +16,30 @@ type StatusInfo struct {
 }
 
 // ParseStatusFromWebhook extrai status do objeto recebido no webhook
-func ParseStatusFromWebhook(webhook map[string]interface{}) ([]StatusInfo, error) {
+func ParseStatusFromWebhook(webhook *model.Webhook) ([]StatusInfo, error) {
 	var infos []StatusInfo
 
-	entries, ok := webhook["entry"].([]interface{})
-	if !ok {
-		return nil, fmt.Errorf("campo 'entry' não encontrado ou inválido")
+	if webhook == nil || len(webhook.Entry) == 0 {
+		return nil, fmt.Errorf("webhook vazio ou inválido")
 	}
 
-	for _, entry := range entries {
-		entryMap, ok := entry.(map[string]interface{})
-		if !ok {
-			continue
-		}
-		changes, ok := entryMap["changes"].([]interface{})
-		if !ok {
-			continue
-		}
-		for _, change := range changes {
-			changeMap, ok := change.(map[string]interface{})
-			if !ok {
-				continue
-			}
-			value, ok := changeMap["value"].(map[string]interface{})
-			if !ok {
-				continue
-			}
-			statuses, ok := value["statuses"].([]interface{})
-			if !ok {
-				continue
-			}
-			for _, status := range statuses {
-				statusMap, ok := status.(map[string]interface{})
-				if !ok {
-					continue
-				}
+	for _, entry := range webhook.Entry {
+		for _, change := range entry.Changes {
+			for _, status := range change.Value.Statuses {
 				info := StatusInfo{
-					MessageID:   fmt.Sprintf("%v", statusMap["id"]),
-					Status:      fmt.Sprintf("%v", statusMap["status"]),
-					Timestamp:   fmt.Sprintf("%v", statusMap["timestamp"]),
-					RecipientID: fmt.Sprintf("%v", statusMap["recipient_id"]),
+					MessageID:   status.ID,
+					Status:      status.Status,
+					Timestamp:   status.Timestamp,
+					RecipientID: status.RecipientID,
 				}
-				if errs, ok := statusMap["errors"].([]interface{}); ok {
-					for _, e := range errs {
-						if errMap, ok := e.(map[string]interface{}); ok {
-							info.Errors = append(info.Errors, errMap)
-						}
-					}
+				for _, errObj := range status.Errors {
+					info.Errors = append(info.Errors, map[string]interface{}{
+						"code":      errObj.Code,
+						"title":     errObj.Title,
+						"message":   errObj.Message,
+						"errorData": errObj.ErrorData,
+						"href":      errObj.Href,
+					})
 				}
 				infos = append(infos, info)
 			}
