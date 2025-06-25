@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
@@ -11,21 +12,27 @@ import (
 
 const API_BASE_URL = "https://graph.facebook.com"
 
-func (c *Client) sendRequest(body interface{}) error {
-	jsonData, err := json.Marshal(body)
-	if err != nil {
-		return fmt.Errorf("erro ao serializar JSON: %w", err)
+func (c *Client) sendRequest(method, endpoint string, body interface{}, result interface{}) error {
+	var reqBody *bytes.Buffer
+	if body != nil {
+		jsonData, err := json.Marshal(body)
+		if err != nil {
+			return fmt.Errorf("erro ao serializar JSON: %w", err)
+		}
+		reqBody = bytes.NewBuffer(jsonData)
+	} else {
+		reqBody = &bytes.Buffer{}
 	}
 
-	url := fmt.Sprintf("%s/%s/%s/messages", API_BASE_URL, c.ApiVersion, c.PhoneNumberID)
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest(method, endpoint, reqBody)
 	if err != nil {
 		return fmt.Errorf("erro ao criar requisição: %w", err)
 	}
 
 	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
-	req.Header.Set("Content-Type", "application/json")
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 
 	resp, err := c.HttpClient.Do(req)
 	if err != nil {
@@ -33,14 +40,17 @@ func (c *Client) sendRequest(body interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	var respBody bytes.Buffer
-	respBody.ReadFrom(resp.Body)
-
 	if resp.StatusCode >= 300 {
-		return fmt.Errorf("erro na API: status %d, resposta: %s", resp.StatusCode, respBody.String())
+		respBody, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("erro na API: status %d, resposta: %s", resp.StatusCode, string(respBody))
 	}
 
-	fmt.Printf("✅ Resposta da API: %s\n", respBody.String())
+	if result != nil {
+		if err := json.NewDecoder(resp.Body).Decode(result); err != nil {
+			return fmt.Errorf("erro ao decodificar resposta: %w", err)
+		}
+	}
+
 	return nil
 }
 
@@ -55,7 +65,7 @@ func (c *Client) SendTextMessage(to []string, message string) error {
 			},
 		}
 
-		if err := c.sendRequest(payload); err != nil {
+		if err := c.sendRequest("POST", fmt.Sprintf("%s/%s/%s/messages", API_BASE_URL, c.ApiVersion, c.PhoneNumberID), payload, nil); err != nil {
 			return fmt.Errorf("erro ao enviar mensagem para %s: %w", phone, err)
 		}
 	}
@@ -72,7 +82,7 @@ func (c *Client) SendTemplateMessage(to []string, template, language string) err
 		payload.Template.Name = template
 		payload.Template.Language.Code = language
 
-		if err := c.sendRequest(payload); err != nil {
+		if err := c.sendRequest("POST", fmt.Sprintf("%s/%s/%s/messages", API_BASE_URL, c.ApiVersion, c.PhoneNumberID), payload, nil); err != nil {
 			return fmt.Errorf("erro ao enviar template para %s: %w", phone, err)
 		}
 	}
