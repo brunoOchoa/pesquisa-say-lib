@@ -5,33 +5,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
+	"github.com/brunoOchoa/whatsapp-lib/config"
 	"github.com/brunoOchoa/whatsapp-lib/pkg/whatsapp"
 )
 
 func main() {
-	// cfg := config.LoadConfig()
-
-	// client := whatsapp.NewClient(cfg)
-
-	// to := []string{"5521985421711"} // Substitua pelo número de telefone do destinatário
-	// msg := "Olá, mensagem depois de ter respondido a mensagem anterior!"
-
-	// err := client.SendTextMessage(to, msg)
-	// if err != nil {
-	// 	log.Fatalf("Erro ao enviar mensagem: %v", err)
-	// }
-
-	// sendT := client.SendTemplateMessage(to, "hello_world", "en_US")
-	// if sendT != nil {
-	// 	log.Fatalf("Erro ao enviar template: %v", sendT)
-	// }
-
-	// fmt.Println("✅ Mensagem enviada com sucesso!")
-
-	// Exemplo de uso do GetMessageStatus
-	// Substitua pelo ID real retornado ao enviar uma mensagem
-
 	// Exemplo de payload recebido do webhook do WhatsApp (como map)
 	webhookPayload := map[string]interface{}{
 		"object": "whatsapp_business_account",
@@ -79,21 +57,20 @@ func main() {
 		log.Fatalf("Erro ao serializar payload: %v", err)
 	}
 
-	// 2. Faça o unmarshal para o struct model.Webhook
-	var webhookObj model.Webhook
-	if err := json.Unmarshal(payloadBytes, &webhookObj); err != nil {
-		log.Fatalf("Erro ao decodificar webhook: %v", err)
-	}
+	// 2. Crie o client e o service
+	cfg := config.LoadConfig()
+	client := whatsapp.NewClient(cfg)
+	svc := client // whatsapp.Client já implementa WhatsAppService
 
-	// 3. Use o struct na função ParseStatusFromWebhook
-	infos, err := whatsapp.ParseStatusFromWebhook(&webhookObj)
+	// 3. Use o service.GetMessageStatus
+	infos, err := svc.GetMessageStatus(payloadBytes)
 	if err != nil {
 		log.Println("Erro ao processar webhook:", err)
 	}
 	for _, info := range infos {
 		fmt.Printf("Mensagem %s para %s está com status: %s\n", info.MessageID, info.RecipientID, info.Status)
 		if len(info.Errors) > 0 {
-			fmt.Printf("Erros: %+v\n", info.Errors)
+			fmt.Printf("Erro da conversa: %+v\n", info.Errors)
 		}
 	}
 }

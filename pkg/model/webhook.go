@@ -41,3 +41,11 @@ type StatusError struct {
 	ErrorData map[string]interface{} `json:"error_data"`
 	Href      string                 `json:"href"`
 }
+
+type StatusInfo struct {
+	MessageID   string
+	Status      string
+	Timestamp   string
+	RecipientID string
+	Errors      []map[string]interface{}
+}
