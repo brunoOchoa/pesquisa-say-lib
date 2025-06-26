@@ -58,7 +58,7 @@ func main() {
 	}
 
 	// 2. Crie o client e o service
-	cfg := config.WhatsAppLibpConfig()
+	cfg := config.WhasAppLibConfig()
 	client := whatsapp.NewClient(cfg)
 	svc := client // whatsapp.Client já implementa WhatsAppService
 

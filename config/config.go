@@ -11,7 +11,7 @@ type ApiMetaConfig struct {
 	ApiVersion    string
 }
 
-func WhatsAppLibpConfig() *ApiMetaConfig {
+func WhasAppLibConfig() *ApiMetaConfig {
 
 	accessToken := os.Getenv("WHATSAPP_TOKEN")
 	phoneID := os.Getenv("WHATSAPP_PHONE_NUMBER_ID")
