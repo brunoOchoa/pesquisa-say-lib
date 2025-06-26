@@ -13,7 +13,7 @@ type Client struct {
 	HttpClient    *http.Client
 }
 
-func NewClient(cfg *config.ApiMetaConfig) *Client {
+func NewClient(cfg *config.Config) *Client {
 	return &Client{
 		AccessToken:   cfg.AccessToken,
 		PhoneNumberID: cfg.PhoneNumberID,

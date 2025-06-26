@@ -5,13 +5,13 @@ import (
 	"os"
 )
 
-type ApiMetaConfig struct {
+type Config struct {
 	AccessToken   string
 	PhoneNumberID string
 	ApiVersion    string
 }
 
-func WhasAppLibConfig() *ApiMetaConfig {
+func WhasAppLibConfig() *Config {
 
 	accessToken := os.Getenv("WHATSAPP_TOKEN")
 	phoneID := os.Getenv("WHATSAPP_PHONE_NUMBER_ID")
@@ -21,7 +21,7 @@ func WhasAppLibConfig() *ApiMetaConfig {
 		log.Fatal("Variáveis de ambiente WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID ou WHATSAPP_API_VERSION não definidas.")
 	}
 
-	return &ApiMetaConfig{
+	return &Config{
 		AccessToken:   accessToken,
 		PhoneNumberID: phoneID,
 		ApiVersion:    apiVersion,

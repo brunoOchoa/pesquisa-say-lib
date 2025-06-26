@@ -8,7 +8,7 @@ import (
 
 func TestNewClient(t *testing.T) {
 
-	cfg := &config.ApiMetaConfig{
+	cfg := &config.Config{
 		AccessToken:   "teste_token",
 		PhoneNumberID: "123456789",
 	}
