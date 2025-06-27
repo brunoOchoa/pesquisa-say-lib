@@ -1,0 +1,39 @@
+{
+    "object": "whatsapp_business_account",
+    "entry": [
+        {
+            "id": "1235292671536231",
+            "changes": [
+                {
+                    "value": {
+                        "messaging_product": "whatsapp",
+                        "metadata": {
+                            "display_phone_number": "15556576647",
+                            "phone_number_id": "650915048109117"
+                        },
+                        "contacts": [
+                            {
+                                "profile": {
+                                    "name": "Bruno Ochoa"
+                                },
+                                "wa_id": "5521985421711"
+                            }
+                        ],
+                        "messages": [
+                            {
+                                "from": "5521985421711",
+                                "id": "wamid.HBgNNTUyMTk4NTQyMTcxMRUCABIYFDNGQUU0NDM0Q0U2MUI3MTRGRUU1AA==",
+                                "timestamp": "1750970525",
+                                "text": {
+                                    "body": "objeto com corpo da msg"
+                                },
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    "field": "messages"
+                }
+            ]
+        }
+    ]
+}

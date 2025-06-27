@@ -19,6 +19,8 @@ type Value struct {
 	MessagingProduct string     `json:"messaging_product"`
 	Metadata         Metadata   `json:"metadata"`
 	Statuses         []Statuses `json:"statuses"`
+	Contacts         []Contact  `json:"contacts,omitempty"`
+	Messages         []Message  `json:"messages,omitempty"`
 }
 
 type Metadata struct {
@@ -33,6 +35,26 @@ type Statuses struct {
 	RecipientID  string        `json:"recipient_id"`
 	Conversation Conversation  `json:"conversation,omitempty"`
 	Errors       []StatusError `json:"errors,omitempty"`
+}
+type Contact struct {
+	Profile Profile `json:"profile"`
+	WAID    string  `json:"wa_id"`
+}
+
+type Profile struct {
+	Name string `json:"name"`
+}
+
+type Message struct {
+	From      string    `json:"from"`
+	ID        string    `json:"id"`
+	Timestamp string    `json:"timestamp"`
+	Text      *TextBody `json:"text,omitempty"`
+	Type      string    `json:"type"`
+}
+
+type TextBody struct {
+	Body string `json:"body"`
 }
 
 type Conversation struct {
