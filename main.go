@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/brunoOchoa/whatsapp-lib/config"
@@ -61,15 +60,27 @@ func main() {
 	cfg := config.WhasAppLibConfig()
 	client := whatsapp.NewClient(cfg)
 
-	// 3. Use o service.GetMessageStatus
-	infos, err := client.GetBody(payloadBytes)
+	// 3. Detecata qual tipo de conteúdo está no payload
+	contentType, err := whatsapp.IdentifyWebhookType(payloadBytes)
 	if err != nil {
-		log.Println("Erro ao processar webhook:", err)
+		log.Fatalf("Erro ao identificar tipo de conteúdo: %v", err)
 	}
-	for _, info := range infos {
-		fmt.Printf("Mensagem '%s' do numero %s do tipo: %s\n", info.Body, info.From, info.Type)
-		// if len(info.Body) > 0 {
-		// 	fmt.Printf("Erro da conversa: %+v\n", info.Body)
-		// }
+
+	// 4. Chame o service com o payload e o tipo de conteúdo
+	switch contentType {
+	case "messages":
+		infos, err := client.GetBody(payloadBytes)
+		if err != nil {
+			log.Fatalf("Erro ao obter corpo das mensagens: %v", err)
+		}
+		log.Printf("Corpo das mensagens: %v", infos)
+	case "statuses":
+		infos, err := client.GetStatuses(payloadBytes)
+		if err != nil {
+			log.Fatalf("Erro ao obter status das mensagens: %v", err)
+		}
+		log.Printf("Status das mensagens: %v", infos)
+	default:
+		log.Println("Tipo de conteúdo desconhecido ou não suportado")
 	}
 }
