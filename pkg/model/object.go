@@ -66,9 +66,9 @@ type Origin struct {
 	Type string `json:"type"`
 }
 type StatusError struct {
-	Code      int                    `json:"code"`
-	Title     string                 `json:"title"`
-	Message   string                 `json:"message"`
-	ErrorData map[string]interface{} `json:"error_data"`
-	Href      string                 `json:"href"`
+	Code      int                    `json:"code,omitempty"`
+	Title     string                 `json:"title,omitempty"`
+	Message   string                 `json:"message,omitempty"`
+	ErrorData map[string]interface{} `json:"error_data,omitempty"`
+	Href      string                 `json:"href,omitempty"`
 }
