@@ -61,7 +61,7 @@ func main() {
 	client := whatsapp.NewClient(cfg)
 
 	// 3. Detecata qual tipo de conteúdo está no payload
-	contentType, err := whatsapp.IdentifyWebhookType(payloadBytes)
+	contentType, err := client.IdentifyWebhookType(payloadBytes)
 	if err != nil {
 		log.Fatalf("Erro ao identificar tipo de conteúdo: %v", err)
 	}
