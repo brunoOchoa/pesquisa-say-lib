@@ -40,7 +40,7 @@ func ParseStatusFromWebhook(webhook *model.Webhook) ([]model.StatusInfo, error) 
 	return infos, nil
 }
 
-func (c *Client) GetMessageStatus(webhookJSON []byte) ([]model.StatusInfo, error) {
+func (c *Client) GetStatuses(webhookJSON []byte) ([]model.StatusInfo, error) {
 	var webhookObj model.Webhook
 	if err := json.Unmarshal(webhookJSON, &webhookObj); err != nil {
 		return nil, fmt.Errorf("erro ao decodificar webhook: %w", err)

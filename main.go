@@ -24,23 +24,23 @@ func main() {
 								"display_phone_number": "15556576647",
 								"phone_number_id":      "650915048109117",
 							},
-							"statuses": []interface{}{
+							"contacts": []interface{}{
 								map[string]interface{}{
-									"id":           "wamid.HBgNNTUyMTk4NTE5MzUyNRUCABEYEjJFMTEyRkRBQjlBQzA5MjFGNwA=",
-									"status":       "failed",
-									"timestamp":    "1750773570",
-									"recipient_id": "5521985193525",
-									"errors": []interface{}{
-										map[string]interface{}{
-											"code":    131047,
-											"title":   "Re-engagement message",
-											"message": "Re-engagement message",
-											"error_data": map[string]interface{}{
-												"details": "Message failed to send because more than 24 hours have passed since the customer last replied to this number.",
-											},
-											"href": "https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes/",
-										},
+									"profile": map[string]interface{}{
+										"name": "Bruno Ochoa",
 									},
+									"wa_id": "5521985421711",
+								},
+							},
+							"messages": []interface{}{
+								map[string]interface{}{
+									"from":      "5521985421711",
+									"id":        "wamid.HBgNNTUyMTk4NTQyMTcxMRUCABIYFDNGQUU0NDM0Q0U2MUI3MTRGRUU1AA==",
+									"timestamp": "1750970525",
+									"text": map[string]interface{}{
+										"body": "Testando a lib usando GetBody",
+									},
+									"type": "text",
 								},
 							},
 						},
@@ -60,17 +60,16 @@ func main() {
 	// 2. Crie o client e o service
 	cfg := config.WhasAppLibConfig()
 	client := whatsapp.NewClient(cfg)
-	svc := client // whatsapp.Client já implementa WhatsAppService
 
 	// 3. Use o service.GetMessageStatus
-	infos, err := svc.GetMessageStatus(payloadBytes)
+	infos, err := client.GetBody(payloadBytes)
 	if err != nil {
 		log.Println("Erro ao processar webhook:", err)
 	}
 	for _, info := range infos {
-		fmt.Printf("Mensagem %s para %s está com status: %s\n", info.MessageID, info.RecipientID, info.Status)
-		if len(info.Errors) > 0 {
-			fmt.Printf("Erro da conversa: %+v\n", info.Errors)
-		}
+		fmt.Printf("Mensagem '%s' do numero %s do tipo: %s\n", info.Body, info.From, info.Type)
+		// if len(info.Body) > 0 {
+		// 	fmt.Printf("Erro da conversa: %+v\n", info.Body)
+		// }
 	}
 }
