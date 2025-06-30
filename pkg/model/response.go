@@ -8,3 +8,12 @@ type StatusInfo struct {
 	RecipientID string
 	Errors      []map[string]interface{}
 }
+
+// MessageBodyInfo representa as informações extraídas de cada mensagem
+type MessageBodyInfo struct {
+	MessageID string
+	From      string
+	Timestamp string
+	Type      string
+	Body      string
+}
