@@ -56,31 +56,15 @@ func main() {
 		log.Fatalf("Erro ao serializar payload: %v", err)
 	}
 
-	// 2. Crie o client e o service
+	// 2. Crie o client
 	cfg := config.WhasAppLibConfig()
 	client := whatsapp.NewClient(cfg)
 
-	// 3. Detecata qual tipo de conteúdo está no payload
-	contentType, err := client.IdentifyWebhookType(payloadBytes)
+	// 3. Use IdentifyWebhookType para extrair e imprimir os dados
+	infos, err := client.IdentifyWebhookType(payloadBytes)
 	if err != nil {
 		log.Fatalf("Erro ao identificar tipo de conteúdo: %v", err)
 	}
 
-	// 4. Chame o service com o payload e o tipo de conteúdo
-	switch contentType {
-	case "messages":
-		infos, err := client.GetBody(payloadBytes)
-		if err != nil {
-			log.Fatalf("Erro ao obter corpo das mensagens: %v", err)
-		}
-		log.Printf("Corpo das mensagens: %v", infos)
-	case "statuses":
-		infos, err := client.GetStatuses(payloadBytes)
-		if err != nil {
-			log.Fatalf("Erro ao obter status das mensagens: %v", err)
-		}
-		log.Printf("Status das mensagens: %v", infos)
-	default:
-		log.Println("Tipo de conteúdo desconhecido ou não suportado")
-	}
+	log.Printf("Dados extraídos do webhook: %+v", infos)
 }

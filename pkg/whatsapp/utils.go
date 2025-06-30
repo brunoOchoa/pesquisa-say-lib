@@ -6,7 +6,7 @@ import (
 	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
 )
 
-func (c *Client) IdentifyWebhookType(webhookJSON []byte) (string, error) {
+func (c *Client) IdentifyWebhookType(webhookJSON []byte) (interface{}, error) {
 	var webhook model.Webhook
 	if err := json.Unmarshal(webhookJSON, &webhook); err != nil {
 		return "unknown", err
@@ -18,9 +18,11 @@ func (c *Client) IdentifyWebhookType(webhookJSON []byte) (string, error) {
 	value := webhook.Entry[0].Changes[0].Value
 	switch {
 	case len(value.Statuses) > 0:
-		return "statuses", nil
+		infos, err := c.GetStatuses(webhookJSON)
+		return infos, err
 	case len(value.Messages) > 0:
-		return "messages", nil
+		infos, err := c.GetBody(webhookJSON)
+		return infos, err
 	default:
 		return "unknown", nil
 	}
