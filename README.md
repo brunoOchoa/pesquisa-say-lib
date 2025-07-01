@@ -9,21 +9,21 @@ Este documento explica o significado de cada campo do objeto JSON recebido via w
   "object": "whatsapp_business_account",
   "entry": [
     {
-      "id": "1235292671536231",
+      "id": "xxxxxxxxxx",
       "changes": [
         {
           "value": {
             "messaging_product": "whatsapp",
             "metadata": {
-              "display_phone_number": "15556576647",
-              "phone_number_id": "650915048109117"
+              "display_phone_number": "xxxxxxxx",
+              "phone_number_id": "xxxxxxxx"
             },
             "statuses": [
               {
-                "id": "wamid.HBgNNTUyMTk4NTE5MzUyNRUCABEYEjJFMTEyRkRBQjlBQzA5MjFGNwA=",
+                "id": "wamid.xxxxxxxxxx=",
                 "status": "failed",
                 "timestamp": "1750773570",
-                "recipient_id": "5521985193525",
+                "recipient_id": "xxxxxxxx",
                 "errors": [
                   {
                     "code": 131047,
