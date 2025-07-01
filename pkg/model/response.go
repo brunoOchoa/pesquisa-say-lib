@@ -1,19 +1,23 @@
 package model
 
-// Usado pela funcao GetMessageStatus para retornar o status de uma mensagem
-type StatusInfo struct {
-	MessageID   string
-	Status      string
-	Timestamp   string
-	RecipientID string
-	Errors      []map[string]interface{}
+type WebhookResult struct {
+	Type     string            `json:"type"`
+	Statuses []StatusInfo      `json:"statuses,omitempty"`
+	Messages []MessageBodyInfo `json:"messages,omitempty"`
 }
 
-// MessageBodyInfo representa as informações extraídas de cada mensagem
+type StatusInfo struct {
+	MessageID   string                   `json:"message_id"`
+	Status      string                   `json:"status"`
+	Timestamp   string                   `json:"timestamp"`
+	RecipientID string                   `json:"recipient_id"`
+	Errors      []map[string]interface{} `json:"errors,omitempty"`
+}
+
 type MessageBodyInfo struct {
-	MessageID string
-	From      string
-	Timestamp string
-	Type      string
-	Body      string
+	MessageID string `json:"message_id"`
+	From      string `json:"from"`
+	Timestamp string `json:"timestamp"`
+	Type      string `json:"type"`
+	Body      string `json:"body,omitempty"`
 }

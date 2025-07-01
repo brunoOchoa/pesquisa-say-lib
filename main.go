@@ -65,6 +65,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("Erro ao identificar tipo de conteúdo: %v", err)
 	}
-
-	log.Printf("Dados extraídos do webhook: %+v", infos)
+	switch infos.Type {
+	case "statuses":
+		log.Printf("Status extraídos: %+v", infos.Statuses)
+	case "messages":
+		log.Printf("Mensagens extraídas: %+v", infos.Messages)
+	default:
+		log.Println("Webhook não contém mensagens nem status.")
+	}
 }
