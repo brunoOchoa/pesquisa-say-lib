@@ -7,11 +7,12 @@ type WebhookResult struct {
 }
 
 type StatusInfo struct {
-	MessageID   string                   `json:"message_id"`
-	Status      string                   `json:"status"`
-	Timestamp   string                   `json:"timestamp"`
-	RecipientID string                   `json:"recipient_id"`
-	Errors      []map[string]interface{} `json:"errors,omitempty"`
+	MessageID    string                   `json:"message_id"`
+	Status       string                   `json:"status"`
+	Timestamp    string                   `json:"timestamp"`
+	RecipientID  string                   `json:"recipient_id"`
+	Conversation []map[string]interface{} `json:"conversation,omitempty"`
+	Errors       []map[string]interface{} `json:"errors,omitempty"`
 }
 
 type MessageBodyInfo struct {

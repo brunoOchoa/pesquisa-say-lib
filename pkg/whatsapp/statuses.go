@@ -24,7 +24,15 @@ func ParseStatusFromWebhook(webhook *model.Webhook) ([]model.StatusInfo, error) 
 					Timestamp:   status.Timestamp,
 					RecipientID: status.RecipientID,
 				}
-				for _, errObj := range status.Errors {
+				if status.Conversation.ID != "" || status.Conversation.Origin.Type != "" {
+					info.Conversation = append(info.Conversation, map[string]interface{}{
+						"id":     status.Conversation.ID,
+						"origin": status.Conversation.Origin,
+					})
+				}
+
+				if len(status.Errors) > 0 {
+					errObj := status.Errors[0]
 					info.Errors = append(info.Errors, map[string]interface{}{
 						"code":      errObj.Code,
 						"title":     errObj.Title,
