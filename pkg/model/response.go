@@ -1,5 +1,15 @@
 package model
 
+type StatusType string
+
+const (
+	Received  StatusType = "Received"
+	Sent      StatusType = "Sent"
+	Failed    StatusType = "Failed"
+	Delivered StatusType = "Delivered"
+	Read      StatusType = "Read"
+)
+
 type WebhookResult struct {
 	Type     string            `json:"type"`
 	Statuses []StatusInfo      `json:"statuses,omitempty"`
@@ -8,7 +18,7 @@ type WebhookResult struct {
 
 type StatusInfo struct {
 	MessageID    string                   `json:"message_id"`
-	Status       string                   `json:"status"`
+	Status       StatusType               `json:"status"`
 	Timestamp    string                   `json:"timestamp"`
 	RecipientID  string                   `json:"recipient_id"`
 	Conversation []map[string]interface{} `json:"conversation,omitempty"`

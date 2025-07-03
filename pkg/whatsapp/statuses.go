@@ -20,7 +20,7 @@ func ParseStatusFromWebhook(webhook *model.Webhook) ([]model.StatusInfo, error) 
 			for _, status := range change.Value.Statuses {
 				info := model.StatusInfo{
 					MessageID:   status.ID,
-					Status:      status.Status,
+					Status:      model.StatusType(status.Status),
 					Timestamp:   status.Timestamp,
 					RecipientID: status.RecipientID,
 				}

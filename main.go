@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// 1. Leia o conteúdo do arquivo object_utility.json
-	file, err := os.Open("doc/object_messages.json")
+	file, err := os.Open("doc/object_utility.json")
 	if err != nil {
 		log.Fatalf("Erro ao abrir o arquivo: %v", err)
 	}
