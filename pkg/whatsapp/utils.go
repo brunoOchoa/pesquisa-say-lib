@@ -29,7 +29,7 @@ func (c *Client) IdentifyWebhookType(webhookJSON []byte) (*model.WebhookResult, 
 	}
 }
 
-func (c *Client) ExtractCommonWebhookInfo(webhookJSON []byte) ([]model.CommonWebhookInfo, error) {
+func (c *Client) ExtractCommonInfo(webhookJSON []byte) ([]model.CommonWebhookInfo, error) {
 	var webhook model.Webhook
 	if err := json.Unmarshal(webhookJSON, &webhook); err != nil {
 		return nil, err

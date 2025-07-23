@@ -40,7 +40,7 @@ func main() {
 	// 	log.Println("Webhook não contém mensagens nem status.")
 	// }
 
-	infos, err := client.ExtractCommonWebhookInfo(payloadBytes)
+	infos, err := client.ExtractCommonInfo(payloadBytes)
 	if err != nil {
 		log.Println("Erro ao extrair informações comuns:", err)
 	}
