@@ -28,7 +28,19 @@ type StatusInfo struct {
 type MessageBodyInfo struct {
 	MessageID string `json:"message_id"`
 	From      string `json:"from"`
+
 	Timestamp string `json:"timestamp"`
 	Type      string `json:"type"`
 	Body      string `json:"body,omitempty"`
+}
+
+type LogResponse struct {
+	Phone string `json:"phone"`
+}
+
+type CommonWebhookInfo struct {
+	WaID      string // Número do usuário (wa_id ou from)
+	MessageID string // wamid
+	Timestamp string
+	Status    string // Se houver
 }

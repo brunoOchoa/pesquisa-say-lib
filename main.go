@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// 1. Leia o conteúdo do arquivo object_utility.json
-	file, err := os.Open("doc/object_utility.json")
+	file, err := os.Open("doc/object_error.json")
 	if err != nil {
 		log.Fatalf("Erro ao abrir o arquivo: %v", err)
 	}
@@ -27,16 +27,22 @@ func main() {
 	client := whatsapp.NewClient(cfg)
 
 	// 3. Use IdentifyWebhookType para extrair e imprimir os dados
-	infos, err := client.IdentifyWebhookType(payloadBytes)
+	// infos, err := client.IdentifyWebhookType(payloadBytes)
+	// if err != nil {
+	// 	log.Fatalf("Erro ao identificar tipo de conteúdo: %v", err)
+	// }
+	// switch infos.Type {
+	// case "statuses":
+	// 	log.Printf("Status extraídos: %+v", infos.Statuses)
+	// case "messages":
+	// 	log.Printf("Mensagens extraídas: %+v", infos.Messages)
+	// default:
+	// 	log.Println("Webhook não contém mensagens nem status.")
+	// }
+
+	infos, err := client.ExtractCommonWebhookInfo(payloadBytes)
 	if err != nil {
-		log.Fatalf("Erro ao identificar tipo de conteúdo: %v", err)
+		log.Println("Erro ao extrair informações comuns:", err)
 	}
-	switch infos.Type {
-	case "statuses":
-		log.Printf("Status extraídos: %+v", infos.Statuses)
-	case "messages":
-		log.Printf("Mensagens extraídas: %+v", infos.Messages)
-	default:
-		log.Println("Webhook não contém mensagens nem status.")
-	}
+	log.Printf("Informações comuns extraídas: %+v", infos)
 }

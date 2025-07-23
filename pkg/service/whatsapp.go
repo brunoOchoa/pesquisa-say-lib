@@ -10,6 +10,7 @@ type WhatsAppService interface {
 	GetStatuses(webhookJSON []byte) ([]model.StatusInfo, error)
 	GetBody(webhookJSON []byte) ([]model.MessageBodyInfo, error)
 	IdentifyWebhookType(webhookJSON []byte) (string, error)
+	ExtractCommonWebhookInfo(webhookJSON []byte) ([]model.CommonWebhookInfo, error)
 }
 
 type whatsApp_service struct {
