@@ -35,36 +35,44 @@ func (c *Client) ExtractCommonInfo(webhookJSON []byte) ([]model.CommonWebhookInf
 		return nil, err
 	}
 	var infos []model.CommonWebhookInfo
+	exists := make(map[string]bool)
 
 	for _, entry := range webhook.Entry {
 		for _, change := range entry.Changes {
-			// Se houver mensagens
+			// Mensagens
 			for _, msg := range change.Value.Messages {
+				key := msg.From + msg.ID
 				info := model.CommonWebhookInfo{
 					MessageID: msg.ID,
 					Timestamp: msg.Timestamp,
-				}
-				if msg.From != "" {
-					info.WaID = msg.From
+					WaID:      msg.From,
 				}
 				infos = append(infos, info)
+				exists[key] = true
+				exists[msg.From] = true // marca que já existe info para esse WaID
 			}
-			// Se houver contatos (ex: em mensagens recebidas)
-			for _, contact := range change.Value.Contacts {
-				info := model.CommonWebhookInfo{
-					WaID: contact.WAID,
-				}
-				infos = append(infos, info)
-			}
-			// Se houver status
+			// Status
 			for _, status := range change.Value.Statuses {
+				key := status.RecipientID + status.ID
 				info := model.CommonWebhookInfo{
 					MessageID: status.ID,
 					Timestamp: status.Timestamp,
-					Status:    status.Status,
+					Status:    string(status.Status),
 					WaID:      status.RecipientID,
 				}
 				infos = append(infos, info)
+				exists[key] = true
+				exists[status.RecipientID] = true // marca que já existe info para esse WaID
+			}
+			// Contatos (só adiciona se não existe info de mensagem/status para esse waid)
+			for _, contact := range change.Value.Contacts {
+				if !exists[contact.WAID] {
+					info := model.CommonWebhookInfo{
+						WaID: contact.WAID,
+					}
+					infos = append(infos, info)
+					exists[contact.WAID] = true
+				}
 			}
 		}
 	}
