@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/brunoOchoa/whatsapp-lib/config"
-	"github.com/brunoOchoa/whatsapp-lib/pkg/whatsapp"
+	"github.com/brunoOchoa/pesquisa-say-lib/config"
+	"github.com/brunoOchoa/pesquisa-say-lib/pkg/lib"
 )
 
 func main() {
@@ -23,8 +23,8 @@ func main() {
 	}
 
 	// 2. Crie o client
-	cfg := config.WhasAppLibConfig()
-	client := whatsapp.NewClient(cfg)
+	cfg := config.LibConfig()
+	client := lib.NewClient(cfg)
 
 	// 3. Use IdentifyWebhookType para extrair e imprimir os dados
 	// infos, err := client.IdentifyWebhookType(payloadBytes)

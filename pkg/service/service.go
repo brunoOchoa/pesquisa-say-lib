@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
+	"github.com/brunoOchoa/pesquisa-say-lib/pkg/model"
 )
 
 type WhatsAppService interface {

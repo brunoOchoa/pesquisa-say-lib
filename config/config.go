@@ -11,7 +11,7 @@ type Config struct {
 	ApiVersion    string
 }
 
-func WhasAppLibConfig() *Config {
+func LibConfig() *Config {
 
 	accessToken := os.Getenv("WHATSAPP_TOKEN")
 	phoneID := os.Getenv("WHATSAPP_PHONE_NUMBER_ID")

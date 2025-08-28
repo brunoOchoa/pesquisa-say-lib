@@ -1,4 +1,4 @@
-package whatsapp
+package lib
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
+	"github.com/brunoOchoa/pesquisa-say-lib/pkg/model"
 )
 
 const API_BASE_URL = "https://graph.facebook.com"

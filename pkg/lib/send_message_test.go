@@ -1,4 +1,4 @@
-package whatsapp
+package lib
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
+	"github.com/brunoOchoa/pesquisa-say-lib/pkg/model"
 )
 
 type RedirectRoundTripper struct {

@@ -1,9 +1,9 @@
-package whatsapp
+package lib
 
 import (
 	"testing"
 
-	"github.com/brunoOchoa/whatsapp-lib/config"
+	"github.com/brunoOchoa/pesquisa-say-lib/config"
 )
 
 func TestNewClient(t *testing.T) {

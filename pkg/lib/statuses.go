@@ -1,10 +1,10 @@
-package whatsapp
+package lib
 
 import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/brunoOchoa/whatsapp-lib/pkg/model"
+	"github.com/brunoOchoa/pesquisa-say-lib/pkg/model"
 )
 
 // ParseStatusFromWebhook extrai informações de status de mensagens do webhook do WhatsApp.
