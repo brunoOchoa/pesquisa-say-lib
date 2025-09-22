@@ -72,7 +72,7 @@ func (c *Client) SendTextMessage(to []string, message string) error {
 	return nil
 }
 
-func (c *Client) SendTemplateMessage(to []string, template, language string) error {
+func (c *Client) SendTemplateMessage(to []string, template, language string, params map[string]string) error {
 	for _, phone := range to {
 		payload := model.TemplatePayload{
 			MessagingProduct: "whatsapp",
@@ -81,6 +81,24 @@ func (c *Client) SendTemplateMessage(to []string, template, language string) err
 		}
 		payload.Template.Name = template
 		payload.Template.Language.Code = language
+
+		// Converter params para o formato esperado
+		if len(params) > 0 {
+			var templateParams []model.TemplateParam
+			for _, value := range params {
+				templateParams = append(templateParams, model.TemplateParam{
+					Type: "text",
+					Text: value,
+				})
+			}
+
+			payload.Template.Components = []model.TemplateComponent{
+				{
+					Type:       "body",
+					Parameters: templateParams,
+				},
+			}
+		}
 
 		if err := c.sendRequest("POST", fmt.Sprintf("%s/%s/%s/messages", API_BASE_URL, c.ApiVersion, c.PhoneNumberID), payload, nil); err != nil {
 			return fmt.Errorf("erro ao enviar template para %s: %w", phone, err)

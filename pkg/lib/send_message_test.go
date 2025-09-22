@@ -98,8 +98,23 @@ func TestSendTemplateMessage_Success(t *testing.T) {
 			t.Errorf("Content-Type inválido. Esperado 'application/json', recebido '%s'", r.Header.Get("Content-Type"))
 		}
 
+		// Validar o payload do template
 		body, _ := io.ReadAll(r.Body)
 		fmt.Printf("Body recebido no mock: %s\n", string(body))
+
+		var payload model.TemplatePayload
+		err := json.Unmarshal(body, &payload)
+		if err != nil {
+			t.Errorf("Erro ao decodificar JSON: %v", err)
+		}
+
+		if payload.Template.Name != "template_name" {
+			t.Errorf("Nome do template incorreto. Esperado 'template_name', recebido '%s'", payload.Template.Name)
+		}
+
+		if payload.Template.Language.Code != "pt_BR" {
+			t.Errorf("Idioma incorreto. Esperado 'pt_BR', recebido '%s'", payload.Template.Language.Code)
+		}
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"messages": [{"id": "gBEGkYiEB1VXAglK1ZEqA1YKPrU"}]}`))
@@ -121,7 +136,12 @@ func TestSendTemplateMessage_Success(t *testing.T) {
 		},
 	}
 
-	err := client.SendTemplateMessage([]string{"5511999999999"}, "template_name", "pt_BR")
+	// Adicionar o parâmetro params que estava faltando
+	params := map[string]string{
+		"1": "Jessica Santos",
+	}
+
+	err := client.SendTemplateMessage([]string{"5511999999999"}, "template_name", "pt_BR", params)
 	if err != nil {
 		t.Errorf("Erro ao enviar mensagem de template: %v", err)
 	}

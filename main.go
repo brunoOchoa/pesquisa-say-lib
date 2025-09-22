@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"log"
 	"os"
 
@@ -17,10 +16,10 @@ func main() {
 	}
 	defer file.Close()
 
-	payloadBytes, err := io.ReadAll(file)
-	if err != nil {
-		log.Fatalf("Erro ao ler o arquivo: %v", err)
-	}
+	// payloadBytes, err := io.ReadAll(file)
+	// if err != nil {
+	// 	log.Fatalf("Erro ao ler o arquivo: %v", err)
+	// }
 
 	// 2. Crie o client
 	cfg := config.LibConfig()
@@ -40,9 +39,24 @@ func main() {
 	// 	log.Println("Webhook não contém mensagens nem status.")
 	// }
 
-	infos, err := client.ExtractCommonInfo(payloadBytes)
-	if err != nil {
-		log.Println("Erro ao extrair informações comuns:", err)
+	// infos, err := client.ExtractCommonInfo(payloadBytes)
+	// if err != nil {
+	// 	log.Println("Erro ao extrair informações comuns:", err)
+	// }
+	// log.Printf("Informações comuns extraídas: %+v", infos)
+	params := map[string]string{
+		// Para template hello_world, geralmente não precisa de parâmetros
+		// Se precisar, adicione aqui: "1": "valor_do_parametro"
 	}
-	log.Printf("Informações comuns extraídas: %+v", infos)
+
+	err = client.SendTemplateMessage(
+		[]string{"5521985421711"}, // coloque o número de destino no formato internacional
+		"hello_world",             // nome do template cadastrado no WhatsApp Business
+		"en_US",                   // código do idioma do template
+		params,
+	)
+	if err != nil {
+		log.Fatalf("Erro ao enviar template: %v", err)
+	}
+	log.Println("Template enviado com sucesso!")
 }

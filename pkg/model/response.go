@@ -28,7 +28,6 @@ type StatusInfo struct {
 type MessageBodyInfo struct {
 	MessageID string `json:"message_id"`
 	From      string `json:"from"`
-
 	Timestamp string `json:"timestamp"`
 	Type      string `json:"type"`
 	Body      string `json:"body,omitempty"`

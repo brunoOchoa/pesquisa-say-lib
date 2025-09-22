@@ -11,12 +11,14 @@ type TextContent struct {
 	Body string `json:"body"`
 }
 
+type TemplateParam struct {
+	Type string `json:"type"`
+	Text string `json:"text"`
+}
+
 type TemplateComponent struct {
-	Type       string `json:"type"`
-	Parameters []struct {
-		Type string `json:"type"`
-		Text string `json:"text"`
-	} `json:"parameters"`
+	Type       string          `json:"type"`
+	Parameters []TemplateParam `json:"parameters"`
 }
 
 type MessageRequest struct {
