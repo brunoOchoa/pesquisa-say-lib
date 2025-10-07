@@ -12,8 +12,9 @@ type TextContent struct {
 }
 
 type TemplateParam struct {
-	Type string `json:"type"`
-	Text string `json:"text"`
+	Type          string `json:"type"`
+	ParameterName string `json:"parameter_name,omitempty"`
+	Text          string `json:"text"`
 }
 
 type TemplateComponent struct {

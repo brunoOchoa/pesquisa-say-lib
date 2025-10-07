@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"log"
 	"os"
 
@@ -10,53 +11,55 @@ import (
 
 func main() {
 	// 1. Leia o conteúdo do arquivo object_utility.json
-	file, err := os.Open("doc/object_messages.json")
+	file, err := os.Open("doc/object_utility.json")
 	if err != nil {
 		log.Fatalf("Erro ao abrir o arquivo: %v", err)
 	}
 	defer file.Close()
 
-	// payloadBytes, err := io.ReadAll(file)
-	// if err != nil {
-	// 	log.Fatalf("Erro ao ler o arquivo: %v", err)
-	// }
+	payloadBytes, err := io.ReadAll(file)
+	if err != nil {
+		log.Fatalf("Erro ao ler o arquivo: %v", err)
+	}
 
 	// 2. Crie o client
 	cfg := config.LibConfig()
 	client := lib.NewClient(cfg)
 
-	// 3. Use IdentifyWebhookType para extrair e imprimir os dados
+	// 3. Testar IdentifyWebhookType
+	// log.Println("\n=== Testando IdentifyWebhookType ===")
 	// infos, err := client.IdentifyWebhookType(payloadBytes)
 	// if err != nil {
 	// 	log.Fatalf("Erro ao identificar tipo de conteúdo: %v", err)
 	// }
+	// log.Printf("Tipo: %s", infos.Type)
 	// switch infos.Type {
 	// case "statuses":
-	// 	log.Printf("Status extraídos: %+v", infos.Statuses)
+	// 	log.Printf("Total de Status: %d", len(infos.Statuses))
+	// 	for i, status := range infos.Statuses {
+	// 		log.Printf("  Status[%d]: MessageID=%s, Status=%s, RecipientID=%s, Timestamp=%s",
+	// 			i, status.MessageID, status.Status, status.RecipientID, status.Timestamp)
+	// 	}
 	// case "messages":
-	// 	log.Printf("Mensagens extraídas: %+v", infos.Messages)
+	// 	log.Printf("Total de Mensagens: %d", len(infos.Messages))
+	// 	for i, msg := range infos.Messages {
+	// 		log.Printf("  Message[%d]: ID=%s, From=%s, Timestamp=%s, Type=%s",
+	// 			i, msg.From, msg.Timestamp, msg.Type)
+	// 	}
 	// default:
 	// 	log.Println("Webhook não contém mensagens nem status.")
 	// }
 
-	// infos, err := client.ExtractCommonInfo(payloadBytes)
-	// if err != nil {
-	// 	log.Println("Erro ao extrair informações comuns:", err)
-	// }
-	// log.Printf("Informações comuns extraídas: %+v", infos)
-	params := map[string]string{
-		// Para template hello_world, geralmente não precisa de parâmetros
-		// Se precisar, adicione aqui: "1": "valor_do_parametro"
-	}
-
-	err = client.SendTemplateMessage(
-		[]string{"5521985421711"}, // coloque o número de destino no formato internacional
-		"hello_world",             // nome do template cadastrado no WhatsApp Business
-		"en_US",                   // código do idioma do template
-		params,
-	)
+	// 4. Testar ExtractCommonInfo
+	log.Println("\n=== Testando ExtractCommonInfo ===")
+	commonInfos, err := client.ExtractCommonInfo(payloadBytes)
 	if err != nil {
-		log.Fatalf("Erro ao enviar template: %v", err)
+		log.Println("Erro ao extrair informações comuns:", err)
+	} else {
+		log.Printf("Total de registros comuns: %d", len(commonInfos))
+		for i, info := range commonInfos {
+			log.Printf("  Info[%d]: WABA=%s, WaID=%s, MessageID=%s, Status=%s, Timestamp=%s",
+				i, info.WABA, info.WaID, info.MessageID, info.Status, info.Timestamp)
+		}
 	}
-	log.Println("Template enviado com sucesso!")
 }

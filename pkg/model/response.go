@@ -38,6 +38,7 @@ type LogResponse struct {
 }
 
 type CommonWebhookInfo struct {
+	WABA      string
 	WaID      string // Número do usuário (wa_id ou from)
 	MessageID string // wamid
 	Timestamp string
