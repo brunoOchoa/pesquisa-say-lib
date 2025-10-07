@@ -39,10 +39,10 @@ func (c *Client) ExtractCommonInfo(webhookJSON []byte) ([]model.CommonWebhookInf
 
 	for _, entry := range webhook.Entry {
 		for _, change := range entry.Changes {
-			// Mensagens
 			for _, msg := range change.Value.Messages {
 				key := msg.From + msg.ID
 				info := model.CommonWebhookInfo{
+					WABA:      entry.ID,
 					MessageID: msg.ID,
 					Timestamp: msg.Timestamp,
 					WaID:      msg.From,
@@ -51,7 +51,6 @@ func (c *Client) ExtractCommonInfo(webhookJSON []byte) ([]model.CommonWebhookInf
 				exists[key] = true
 				exists[msg.From] = true // marca que já existe info para esse WaID
 			}
-			// Status
 			for _, status := range change.Value.Statuses {
 				key := status.RecipientID + status.ID
 				info := model.CommonWebhookInfo{
@@ -64,10 +63,10 @@ func (c *Client) ExtractCommonInfo(webhookJSON []byte) ([]model.CommonWebhookInf
 				exists[key] = true
 				exists[status.RecipientID] = true // marca que já existe info para esse WaID
 			}
-			// Contatos (só adiciona se não existe info de mensagem/status para esse waid)
 			for _, contact := range change.Value.Contacts {
 				if !exists[contact.WAID] {
 					info := model.CommonWebhookInfo{
+						WABA: entry.ID,
 						WaID: contact.WAID,
 					}
 					infos = append(infos, info)

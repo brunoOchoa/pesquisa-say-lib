@@ -1,0 +1,39 @@
+{
+    "object": "whatsapp_business_account",
+    "entry": [
+        {
+            "id": "1405124998284537",
+            "changes": [
+                {
+                    "value": {
+                        "messaging_product": "whatsapp",
+                        "metadata": {
+                            "display_phone_number": "15551402773",
+                            "phone_number_id": "818147504715377"
+                        },
+                        "statuses": [
+                            {
+                                "id": "wamid.HBgNNTUyMTk4NTQyMTcxMRUCABEYEjFGRkUzQjNEMDA1QUY4OTY1MAA=",
+                                "status": "failed",
+                                "timestamp": "1760541801",
+                                "recipient_id": "5521985421711",
+                                "errors": [
+                                    {
+                                        "code": 130497,
+                                        "title": "Business account is restricted from messaging users in this country.",
+                                        "message": "Business account is restricted from messaging users in this country.",
+                                        "error_data": {
+                                            "details": "Business account is restricted from messaging users in this country."
+                                        },
+                                        "href": "https:\/\/developers.facebook.com\/docs\/whatsapp\/cloud-api\/support\/error-codes\/"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "field": "messages"
+                }
+            ]
+        }
+    ]
+}
