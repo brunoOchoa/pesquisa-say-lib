@@ -24,6 +24,8 @@ func (c *Client) sendRequest(method, endpoint string, body interface{}, result i
 		reqBody = &bytes.Buffer{}
 	}
 
+	fmt.Println("RequestBody:", reqBody.String()) // Log do corpo da requisição
+
 	req, err := http.NewRequest(method, endpoint, reqBody)
 	if err != nil {
 		return fmt.Errorf("erro ao criar requisição: %w", err)
@@ -94,7 +96,7 @@ func (c *Client) SendTemplateMessage(to []string, template, language string, par
 
 			payload.Template.Components = []model.TemplateComponent{
 				{
-					Type:       "body",
+					Type:       "header",
 					Parameters: templateParams,
 				},
 			}

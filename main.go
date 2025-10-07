@@ -45,14 +45,14 @@ func main() {
 	// }
 	// log.Printf("Informações comuns extraídas: %+v", infos)
 	params := map[string]string{
-		// Para template hello_world, geralmente não precisa de parâmetros
+		"text": "Bruno Ochoa",
 		// Se precisar, adicione aqui: "1": "valor_do_parametro"
 	}
 
 	err = client.SendTemplateMessage(
 		[]string{"5521985421711"}, // coloque o número de destino no formato internacional
-		"hello_world",             // nome do template cadastrado no WhatsApp Business
-		"en_US",                   // código do idioma do template
+		"oi_dev",                  // nome do template cadastrado no WhatsApp Business
+		"pt_BR",                   // código do idioma do template
 		params,
 	)
 	if err != nil {
